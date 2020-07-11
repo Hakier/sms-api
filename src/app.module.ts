@@ -1,7 +1,7 @@
 import { Logger, Module } from '@nestjs/common';
 import { AppService } from './app.service';
 import { ConfigModule } from './config';
-import { InfoModule } from './info/info.module';
+import { InfoModule } from './info';
 import { SmsModule } from './sms';
 
 @Module({

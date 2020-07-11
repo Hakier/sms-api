@@ -1,16 +1,13 @@
-import { Controller, Get, Param } from '@nestjs/common';
-import { IMessage } from 'smsgateway.me';
+import { Body, Controller, Post } from '@nestjs/common';
+import { NewMessageDto } from './dto/NewMessageDto';
 import { SmsService } from './sms.service';
 
 @Controller('')
 export class SmsController {
   constructor(private readonly smsService: SmsService) {}
 
-  @Get('send/:phoneNumber/:message')
-  async sendMessage(@Param('phoneNumber') phoneNumber: string, @Param('message') message: string) {
-    return this.smsService.sendMessage({
-      phone_number: phoneNumber,
-      message,
-    });
+  @Post('/send')
+  async send(@Body() newMessageDto: NewMessageDto) {
+    return this.smsService.sendMessage(newMessageDto);
   }
 }
