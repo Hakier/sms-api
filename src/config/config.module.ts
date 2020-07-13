@@ -1,11 +1,15 @@
-import { Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 import { ConfigService } from './config.service';
 
 @Module({
   providers: [
+    Logger,
     {
       provide: ConfigService,
-      useFactory: () => new ConfigService(`${process.env.NODE_ENV || ''}.env`),
+      useFactory: (logger: Logger): ConfigService => {
+        return new ConfigService(logger, `${process.env.NODE_ENV || ''}.env`);
+      },
+      inject: [Logger],
     },
   ],
   exports: [ConfigService],
