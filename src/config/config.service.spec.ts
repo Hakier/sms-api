@@ -41,12 +41,24 @@ describe('ConfigService', () => {
       expect(service.isCorsEnabled).toBeTruthy();
       expect(service.port).toBe(444);
     });
+
+    describe('when same option is defined in process ENV', () => {
+      beforeAll(async () => {
+        process.env.PORT = '1234';
+        service = (await createTestingModule(configFilePath)).get(ConfigService);
+      });
+      it('should overwrite this option', () => {
+        expect(service.port).toBe(1234);
+      });
+    });
   });
   describe('when config file does not exist', () => {
     const notExistingConfigFilePath = 'not_existing_config.env';
     let logger: Logger;
 
     beforeAll(async () => {
+      process.env.PORT = '123';
+      process.env.CORS_ENABLED = 'false';
       const module = await createTestingModule(notExistingConfigFilePath);
 
       service = module.get(ConfigService);
@@ -55,6 +67,9 @@ describe('ConfigService', () => {
 
     it('should construct the service', () => {
       expect(service).toBeDefined();
+    });
+    it('should read config from process ENV', () => {
+      expect(service.port).toBe(123);
     });
     it('should report that config file does not exist and using only ENV', () => {
       expect(logger.log).toHaveBeenCalledTimes(1);

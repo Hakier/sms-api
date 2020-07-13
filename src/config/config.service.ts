@@ -9,7 +9,7 @@ const envVarsSchema: Joi.ObjectSchema = Joi.object({
     .default('development'),
   PORT: Joi.number().default(3000),
   CORS_ENABLED: Joi.boolean().required(),
-});
+}).unknown();
 
 type environment = 'development' | 'production' | 'test';
 
@@ -22,7 +22,9 @@ export class ConfigService {
   private readonly envConfig: EnvConfig;
 
   constructor(private readonly logger: Logger, filePath: string) {
-    this.envConfig = this.validateInput(this.readFile(filePath));
+    const config = { ...this.readFile(filePath), ...process.env };
+
+    this.envConfig = this.validateInput(config);
   }
 
   get environment(): environment {
