@@ -19,6 +19,7 @@ export interface EnvConfig {
 
 @Injectable()
 export class ConfigService {
+  private static envVarsSchema = envVarsSchema;
   private readonly envConfig: EnvConfig;
 
   constructor(private readonly logger: Logger, filePath: string) {
@@ -52,7 +53,7 @@ export class ConfigService {
    * including the applied default values.
    */
   private validateInput(envConfig: EnvConfig): EnvConfig {
-    const { error, value: validatedEnvConfig } = envVarsSchema.validate(envConfig);
+    const { error, value: validatedEnvConfig } = ConfigService.envVarsSchema.validate(envConfig);
 
     if (error) {
       throw new Error(`Config validation error: ${error.message}`);
