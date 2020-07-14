@@ -1,6 +1,6 @@
 {
   "name": "sms-api",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "",
   "author": "",
   "private": true,
@@ -20,7 +20,10 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
-  "pre-commit": [ "lint", "test" ],
+  "pre-commit": [
+    "lint",
+    "test"
+  ],
   "dependencies": {
     "@hapi/joi": "^17.1.1",
     "@nestjs/common": "^7.0.0",
