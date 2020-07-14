@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { resolve } from 'path';
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const { name, description, version } = require(resolve(process.cwd(), 'package.json'));
 
 export interface AppInfo {
