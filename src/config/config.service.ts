@@ -9,6 +9,10 @@ const envVarsSchema: Joi.ObjectSchema = Joi.object({
     .default('development'),
   PORT: Joi.number().default(3000),
   CORS_ENABLED: Joi.boolean().required(),
+  // /* You can get token from https://smsgateway.me/dashboard/settings */
+  SMS_GATEWAY__TOKEN: Joi.string().required(),
+  // /* You can get deviceId from https://smsgateway.me/dashboard/devices or by calling gateway.device.search() */
+  SMS_GATEWAY__DEVICE_ID: Joi.string().required(),
 }).unknown();
 
 type environment = 'development' | 'production' | 'test';
@@ -38,6 +42,14 @@ export class ConfigService {
 
   get isCorsEnabled(): boolean {
     return Boolean(this.envConfig.CORS_ENABLED);
+  }
+
+
+  get smsGateway(): { token: string, deviceId: number } {
+    return {
+      token: this.envConfig.SMS_GATEWAY__TOKEN,
+      deviceId: Number(this.envConfig.SMS_GATEWAY__DEVICE_ID),
+    };
   }
 
   private readFile(filePath: string) {
