@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { INewMessage, SmsGateway } from 'smsgateway.me';
+import { IMessage, INewMessage, SmsGateway } from 'smsgateway.me';
 import { ConfigService } from '../config';
 
 @Injectable()
@@ -16,7 +16,7 @@ export class SmsService {
     return this.config.smsGateway.deviceId;
   }
 
-  async sendMessage(message: INewMessage): Promise<INewMessage> {
-    return (await this.gateway.message.send([{ device_id: this.deviceId, ...message }]))[0];
+  async sendMessage(payload: INewMessage): Promise<IMessage> {
+    return (await this.gateway.message.send([{ device_id: this.deviceId, ...payload }]))[0];
   }
 }
